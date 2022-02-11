@@ -3,12 +3,20 @@
  */
 package guru.springframework.spring5recipeapp.domain;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 
@@ -38,9 +46,6 @@ public class Recipe {
 	
 	private String directions;
 	
-	//TODO add difficulty
-	//private Difficulty difficulty;
-	
 	@Lob
 	private Byte[] image;
 	
@@ -48,7 +53,16 @@ public class Recipe {
 	private Notes notes;
 	
 	@OneToMany(cascade = CascadeType.ALL, mappedBy = "recipe")
-	private Ingredient ingredient;
+	private Set<Ingredient> ingredients = new HashSet<>();
+
+	@Enumerated(EnumType.STRING)
+	private Difficulty difficulty;
+	
+	@ManyToMany
+	@JoinTable(name = "recipe_category", 
+		joinColumns = @JoinColumn(name = "recipe_id"),
+		inverseJoinColumns = @JoinColumn(name = "category_id"))
+	private Set<Category> categories = new HashSet<>();
 	
 	//getter and setter
 	
@@ -112,11 +126,23 @@ public class Recipe {
 	public void setNotes(Notes notes) {
 		this.notes = notes;
 	}
-	public Ingredient getIngredient() {
-		return ingredient;
+	public Set<Ingredient> getIngredients() {
+		return ingredients;
 	}
-	public void setIngredient(Ingredient ingredient) {
-		this.ingredient = ingredient;
+	public void setIngredients(Set<Ingredient> ingredient) {
+		this.ingredients = ingredient;
+	}
+	public Difficulty getDifficulty() {
+		return difficulty;
+	}
+	public void setDifficulty(Difficulty difficulty) {
+		this.difficulty = difficulty;
+	}
+	public Set<Category> getCategories() {
+		return categories;
+	}
+	public void setCategories(Set<Category> categories) {
+		this.categories = categories;
 	}
 	
 }
