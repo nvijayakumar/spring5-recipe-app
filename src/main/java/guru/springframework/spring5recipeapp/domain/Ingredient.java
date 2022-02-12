@@ -34,9 +34,22 @@ public class Ingredient {
 	
 	@OneToOne(fetch = FetchType.EAGER) //by default OneToOne is EAGER from JPA 2.1
 	private UnitOfMeasure uom;
-
-	//getter and setter
 	
+	/**
+	 * No argument constructor for Spring to create proxy class.
+	 */
+	public Ingredient() {
+		
+	}
+	
+	public Ingredient(String description, BigDecimal amount, UnitOfMeasure uom) {
+		this.description = description;
+		this.amount = amount;
+		this.uom = uom;
+	}
+	
+	//getter and setter
+
 	public Long getId() {
 		return id;
 	}

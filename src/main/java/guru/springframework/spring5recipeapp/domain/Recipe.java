@@ -44,6 +44,7 @@ public class Recipe {
 	
 	private String url;
 	
+	@Lob
 	private String directions;
 	
 	@Lob
@@ -125,12 +126,17 @@ public class Recipe {
 	}
 	public void setNotes(Notes notes) {
 		this.notes = notes;
+		notes.setRecipe(this);
 	}
 	public Set<Ingredient> getIngredients() {
 		return ingredients;
 	}
 	public void setIngredients(Set<Ingredient> ingredient) {
 		this.ingredients = ingredient;
+	}
+	public void addIngredient(Ingredient ingredient) {
+		this.ingredients.add(ingredient);
+		ingredient.setRecipe(this);
 	}
 	public Difficulty getDifficulty() {
 		return difficulty;
