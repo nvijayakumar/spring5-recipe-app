@@ -10,11 +10,16 @@ import javax.persistence.Id;
 import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 
+import lombok.Data;
+import lombok.EqualsAndHashCode;
+
 /**
  * @author vijayakumar
  * @Since  09-Feb-2022
  *
  */
+@Data
+@EqualsAndHashCode(exclude = {"recipe"})
 @Entity
 public class Notes {
 
@@ -32,32 +37,5 @@ public class Notes {
 	 */
 	@Lob
 	private String recipeNotes;
-
-	//getter and setter
-	
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
-	}
-
-	public Recipe getRecipe() {
-		return recipe;
-	}
-
-	public void setRecipe(Recipe recipe) {
-		this.recipe = recipe;
-	}
-
-	public String getRecipeNotes() {
-		return recipeNotes;
-	}
-
-	public void setRecipeNotes(String recipeNotes) {
-		this.recipeNotes = recipeNotes;
-	}
-	
 	
 }
