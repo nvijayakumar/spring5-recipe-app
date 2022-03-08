@@ -4,6 +4,7 @@
 package guru.springframework.spring5recipeapp.services;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.springframework.stereotype.Service;
@@ -33,4 +34,9 @@ public class RecipeServiceImpl implements RecipeService {
 		return recipes;
 	}
 
+	@Override
+	public Recipe findById(Long recipeId) {
+		Optional<Recipe> optional = recipeRepository.findById(recipeId);
+		return optional.orElseThrow(() -> new NullPointerException("Recipe Id cannot be null."));
+	}
 }

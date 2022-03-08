@@ -4,11 +4,14 @@
 package guru.springframework.spring5recipeapp.services;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 import org.junit.jupiter.api.BeforeEach;
@@ -68,6 +71,23 @@ class RecipeServiceImplTest {
 		
 		//this will verify how many times the mock object was called. Specifically findAll() method.
 		verify(recipeRepository, times(2)).findAll();
+	}
+	
+	@Test
+	void testFindById() {
+		Recipe recipe1 = new Recipe();
+		recipe1.setId(1L);
+		recipe1.setDescription("1");
+		
+		when(recipeRepository.findById(anyLong())).thenReturn(Optional.of(recipe1));
+		
+		Recipe returnRecipe = recipeServiceImpl.findById(1L);
+		
+		assertEquals(1, returnRecipe.getId());
+		
+		verify(recipeRepository, times(1)).findById(anyLong());
+		
+		verify(recipeRepository, never()).findAll();
 	}
 
 }
