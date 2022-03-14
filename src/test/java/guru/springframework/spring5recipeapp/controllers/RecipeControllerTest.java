@@ -19,6 +19,7 @@ import org.mockito.Captor;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
@@ -61,6 +62,7 @@ class RecipeControllerTest {
 		
 		mockMvc.perform(get("/recipe/show/1"))
 			.andExpect(view().name("/recipe/show"))
+			.andExpect(MockMvcResultMatchers.model().attributeExists("recipe"))
 			.andExpect(status().isOk());
 		
 		verify(recipeService, times(1)).findById(captor.capture());

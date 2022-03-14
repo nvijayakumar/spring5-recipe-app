@@ -10,5 +10,15 @@ package guru.springframework.spring5recipeapp.domain;
  */
 public enum Difficulty {
 
-	EASY, MODERATE, HARD;
+	EASY("Easy"), MODERATE("Moderate"), HARD("Hard");
+	
+	String value;
+	
+	Difficulty(String value) {
+		this.value = value;
+	}
+	
+	String getValue() {
+		return value;
+	}
 }
