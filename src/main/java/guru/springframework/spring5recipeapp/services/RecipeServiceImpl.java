@@ -40,7 +40,7 @@ public class RecipeServiceImpl implements RecipeService {
 
 	@Override
 	public Set<Recipe> getRecipes() {
-		System.out.println("Calling recipes.");
+		log.debug("Calling recipes.");
 		Set<Recipe> recipes = new HashSet<>();
 		recipeRepository.findAll().iterator().forEachRemaining(recipes::add);
 		return recipes;
@@ -50,6 +50,12 @@ public class RecipeServiceImpl implements RecipeService {
 	public Recipe findById(Long recipeId) {
 		Optional<Recipe> optional = recipeRepository.findById(recipeId);
 		return optional.orElseThrow(() -> new NullPointerException("Recipe Id cannot be null."));
+	}
+	
+	@Transactional
+	@Override
+	public RecipeCommand findCommandById(Long recipeId) {
+		return recipeToRecipeCommand.convert(findById(recipeId));
 	}
 
 	@Transactional
@@ -61,5 +67,11 @@ public class RecipeServiceImpl implements RecipeService {
 		log.debug("Recipe saved: " + savedRecipe.getId());
 		
 		return recipeToRecipeCommand.convert(savedRecipe);
+	}
+	
+	@Override
+	public void deleteById(Long recipeId) {
+		log.debug("Delete id " + recipeId);
+		recipeRepository.deleteById(recipeId);
 	}
 }

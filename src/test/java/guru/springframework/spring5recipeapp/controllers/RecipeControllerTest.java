@@ -60,7 +60,7 @@ class RecipeControllerTest {
 
 		when(recipeService.findById(anyLong())).thenReturn(recipe1);
 		
-		mockMvc.perform(get("/recipe/show/1"))
+		mockMvc.perform(get("/recipe/1/show"))
 			.andExpect(view().name("/recipe/show"))
 			.andExpect(MockMvcResultMatchers.model().attributeExists("recipe"))
 			.andExpect(status().isOk());
@@ -71,4 +71,14 @@ class RecipeControllerTest {
 		assertEquals(1L, recipeId);
 	}
 
+	@Test
+	void testDeleteById() throws Exception {
+		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
+		
+		mockMvc.perform(get("/recipe/2/delete"))
+			.andExpect(status().is3xxRedirection())
+			.andExpect(view().name("redirect:/"));
+		
+		verify(recipeService, times(1)).deleteById(anyLong());
+	}
 }
