@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 
 import guru.springframework.spring5recipeapp.commands.IngredientCommand;
 import guru.springframework.spring5recipeapp.domain.Ingredient;
+import guru.springframework.spring5recipeapp.domain.Recipe;
 import lombok.Synchronized;
 
 /**
@@ -36,6 +37,14 @@ public class IngredientCommandToIngredient implements Converter<IngredientComman
 		ingredient.setId(source.getId());
 		ingredient.setDescription(source.getDescription());
 		ingredient.setAmount(source.getAmount());
+		
+		if (source.getRecipeId() != null) {
+			Recipe recipe = new Recipe();
+			recipe.setId(source.getRecipeId());
+			ingredient.setRecipe(recipe);
+			recipe.addIngredient(ingredient);
+		}
+		
 		ingredient.setUom(uomConverter.convert(source.getUomCommand()));
 		
 		return ingredient;

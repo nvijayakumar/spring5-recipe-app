@@ -3,7 +3,6 @@
  */
 package guru.springframework.spring5recipeapp.controllers;
 
-import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -18,13 +17,13 @@ import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MockMvcBuilder;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import guru.springframework.spring5recipeapp.commands.IngredientCommand;
 import guru.springframework.spring5recipeapp.commands.RecipeCommand;
 import guru.springframework.spring5recipeapp.services.IngredientService;
 import guru.springframework.spring5recipeapp.services.RecipeService;
+import guru.springframework.spring5recipeapp.services.UnitOfMeasureService;
 
 /**
  * @author vijayakumar
@@ -39,6 +38,9 @@ class IngredientControllerTest {
 	@Mock
 	IngredientService ingredientService;
 	
+	@Mock
+	UnitOfMeasureService unitOfMeasureService;
+	
 	IngredientController controller;
 	
 	MockMvc mockMvc;
@@ -47,7 +49,7 @@ class IngredientControllerTest {
 	void setUp() throws Exception {
 		MockitoAnnotations.openMocks(this);
 		
-		controller = new IngredientController(recipeService, ingredientService);
+		controller = new IngredientController(recipeService, ingredientService, unitOfMeasureService);
 		mockMvc = MockMvcBuilders.standaloneSetup(controller).build();
 	}
 
