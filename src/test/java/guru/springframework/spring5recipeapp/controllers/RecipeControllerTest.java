@@ -24,6 +24,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.ui.Model;
 
 import guru.springframework.spring5recipeapp.domain.Recipe;
+import guru.springframework.spring5recipeapp.exceptions.NotFoundException;
 import guru.springframework.spring5recipeapp.services.RecipeService;
 
 /**
@@ -44,16 +45,17 @@ class RecipeControllerTest {
 	
 	RecipeController recipeController;
 	
+	MockMvc mockMvc;
+	
 	@BeforeEach
 	void setUp() throws Exception {
 		MockitoAnnotations.openMocks(this);
 		recipeController = new RecipeController(recipeService);
+		mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
 	}
 
 	@Test
 	void testShowById() throws Exception {
-		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-		
 		Recipe recipe1 = new Recipe();
 		recipe1.setId(1L);
 		recipe1.setDescription("1");
@@ -73,12 +75,19 @@ class RecipeControllerTest {
 
 	@Test
 	void testDeleteById() throws Exception {
-		MockMvc mockMvc = MockMvcBuilders.standaloneSetup(recipeController).build();
-		
 		mockMvc.perform(get("/recipe/2/delete"))
 			.andExpect(status().is3xxRedirection())
 			.andExpect(view().name("redirect:/"));
 		
 		verify(recipeService, times(1)).deleteById(anyLong());
+	}
+	
+	@Test
+	void testGetRecipeNotFound() throws Exception {
+		when(recipeService.findById(anyLong())).thenThrow(NotFoundException.class);
+		
+		mockMvc.perform(get("/recipe/1/show"))
+			.andExpect(status().isNotFound())
+			.andExpect(view().name("404error"));
 	}
 }
