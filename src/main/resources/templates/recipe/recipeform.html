@@ -29,7 +29,7 @@
                         <div class="card-body">
                             <div class="row">
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('description')} ? 'col-md-3 form-group text-danger' : 'col-md-3 form-group'">
-                                    <label><b>Recipe Description:</b></label>
+                                    <label th:text="#{recipe.description}"><b>Recipe Description:</b></label>
                                     <input type="text" class="form-control" th:field="*{description}"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('description')}">
                                         <ul>
